@@ -1,5 +1,5 @@
 ````md
-# 🚀 Mini CRM Backend – NestJS Assignment
+# 🚀 TaskForge
 
 A production-style CRM backend built using **NestJS, PostgreSQL, Prisma ORM, JWT Authentication, and Role-Based Authorization**.
 
