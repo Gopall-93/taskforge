@@ -1,7 +1,3 @@
-Ahh got you 😭 you want **ONLY raw README.md file content**, no explanations, no chat text.
-
-Here you go — **copy-paste directly**:
-
 ````md
 # 🚀 Mini CRM Backend – NestJS Assignment
 
