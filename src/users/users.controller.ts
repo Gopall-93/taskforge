@@ -1,6 +1,6 @@
 import { Controller, Get, Param, Patch, Body } from '@nestjs/common';
 import { UsersService } from './users.service';
-import { Roles } from 'src/common/decorators/roles.decorators';
+import { Roles } from 'src/common/decorators/roles.decorator';
 import { Role } from 'src/common/enums/role.enum';
 import {
   ApiBearerAuth,
