@@ -1,25 +1,42 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { INestApplication } from '@nestjs/common';
 import request from 'supertest';
-import { App } from 'supertest/types';
-import { AppModule } from './../src/app.module';
+import { createTestApp } from './setup';
+import { randomUUID } from 'crypto';
 
-describe('AppController (e2e)', () => {
-  let app: INestApplication<App>;
+describe('Auth Routes', () => {
+  let app;
+  const email = `admin-${randomUUID()}@test.com`;
 
-  beforeEach(async () => {
-    const moduleFixture: TestingModule = await Test.createTestingModule({
-      imports: [AppModule],
-    }).compile();
-
-    app = moduleFixture.createNestApplication();
-    await app.init();
+  beforeAll(async () => {
+    app = await createTestApp();
   });
 
-  it('/ (GET)', () => {
-    return request(app.getHttpServer())
-      .get('/')
-      .expect(200)
-      .expect('Hello World!');
+  afterAll(async () => {
+    await app.close();
+  });
+
+  it('should register user', async () => {
+    const res = await request(app.getHttpServer())
+      .post('/auth/register')
+      .send({
+        name: 'Admin',
+        email,
+        password: 'password123',
+        role: 'ADMIN',
+      });
+
+    expect(res.status).toBe(201);
+    expect(res.body.email).toBe(email);
+  });
+
+  it('should login user', async () => {
+    const res = await request(app.getHttpServer())
+      .post('/auth/login')
+      .send({
+        email,
+        password: 'password123',
+      });
+
+    expect(res.status).toBe(201);
+    expect(res.body.accessToken).toBeDefined();
   });
 });
