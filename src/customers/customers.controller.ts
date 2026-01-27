@@ -13,6 +13,7 @@ import { Roles } from 'src/common/decorators/roles.decorators';
 import { Role } from 'src/common/enums/role.enum';
 import { CreateCustomerDto } from './dto/create-customer.dto';
 import { UpdateCustomerDto } from './dto/update-customer.dto';
+import { PaginatedCustomersDto } from './dto/paginated-customer.dto';
 import {
   ApiBearerAuth,
   ApiTags,
@@ -22,8 +23,6 @@ import {
   ApiParam,
   ApiQuery,
 } from '@nestjs/swagger';
-import { CustomerResponseDto } from './dto/customer-response.dto';
-import { ErrorResponseDto } from 'src/common/dto/error-response.dto';
 
 @ApiTags('Customers')
 @ApiBearerAuth()
@@ -41,17 +40,6 @@ export class CustomersController {
   @ApiResponse({ status: 403, description: 'Admin access required' })
   create(@Body() dto: CreateCustomerDto) {
     return this.service.create(dto);
-  }
-
-  @Get()
-  @Roles(Role.ADMIN, Role.EMPLOYEE)
-  @ApiOperation({ summary: 'Get customers with pagination' })
-  @ApiQuery({ name: 'page', example: 1, required: false })
-  @ApiQuery({ name: 'limit', example: 10, required: false })
-  @ApiResponse({ status: 200, description: 'Paginated customers returned' })
-  @ApiResponse({ status: 401, description: 'Unauthorized' })
-  findAll(@Query('page') page = 1, @Query('limit') limit = 10) {
-    return this.service.findAll(Number(page), Number(limit));
   }
 
   @Get(':id')
@@ -85,5 +73,30 @@ export class CustomersController {
   @ApiResponse({ status: 403, description: 'Admin access required' })
   remove(@Param('id') id: string) {
     return this.service.remove(Number(id));
+  }
+
+  @Get()
+  @Roles(Role.ADMIN, Role.EMPLOYEE)
+  @ApiOperation({ summary: 'Get customers with pagination & search' })
+  @ApiQuery({ name: 'page', required: false, example: 1 })
+  @ApiQuery({ name: 'limit', required: false, example: 10 })
+  @ApiQuery({
+    name: 'search',
+    required: false,
+    example: 'acme',
+    description: 'Search by name or email (case-insensitive)',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Paginated customers list',
+    type: PaginatedCustomersDto,
+  })
+  @ApiResponse({ status: 401, description: 'Unauthorized' })
+  findAll(
+    @Query('page') page = 1,
+    @Query('limit') limit = 10,
+    @Query('search') search?: string,
+  ) {
+    return this.service.findAll(Number(page), Number(limit), search);
   }
 }

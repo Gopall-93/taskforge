@@ -24,25 +24,44 @@ export class CustomersService {
     return this.prisma.customer.create({ data: dto });
   }
 
-  async findAll(page = 1, limit = 10) {
+  async findAll(page = 1, limit = 10, search?: string) {
     const skip = (page - 1) * limit;
 
-    const [data, total] = await Promise.all([
-      this.prisma.customer.findMany({
-        skip,
-        take: limit,
-        orderBy: { createdAt: 'desc' },
-      }),
-      this.prisma.customer.count(),
+    let where: Prisma.CustomerWhereInput = {};
+
+    if (search) {
+      where = {
+        OR: [
+          {
+            name: {
+              contains: search,
+              mode: Prisma.QueryMode.insensitive,
+            },
+          },
+          {
+            email: {
+              contains: search,
+              mode: Prisma.QueryMode.insensitive,
+            },
+          },
+        ],
+      };
+    }
+
+    const [data, totalRecords] = await Promise.all([
+      this.prisma.customer.findMany({ where, skip, take: limit }),
+      this.prisma.customer.count({ where }),
     ]);
 
     return {
-      total,
       page,
       limit,
+      totalRecords,
+      totalPages: Math.ceil(totalRecords / limit),
       data,
     };
   }
+
 
   async findOne(id: number) {
     const customer = await this.prisma.customer.findUnique({ where: { id } });

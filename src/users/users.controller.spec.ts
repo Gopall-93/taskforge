@@ -10,7 +10,6 @@ describe('UsersService', () => {
       findMany: jest.fn(),
       findUnique: jest.fn(),
       update: jest.fn(),
-      create: jest.fn(),
     },
   };
 

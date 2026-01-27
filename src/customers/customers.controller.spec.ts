@@ -1,18 +1,32 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { CustomersController } from './customers.controller';
+import { CustomersService } from './customers.service';
+import { PrismaService } from 'src/prisma/prisma.service';
 
-describe('CustomersController', () => {
-  let controller: CustomersController;
+describe('CustomersService', () => {
+  let service: CustomersService;
+  let prisma: PrismaService;
 
-  beforeEach(async () => {
-    const module: TestingModule = await Test.createTestingModule({
-      controllers: [CustomersController],
-    }).compile();
+  beforeEach(() => {
+    prisma = {
+      customer: {
+        findUnique: jest.fn(),
+        create: jest.fn(),
+      },
+    } as any;
 
-    controller = module.get<CustomersController>(CustomersController);
+    service = new CustomersService(prisma);
   });
 
-  it('should be defined', () => {
-    expect(controller).toBeDefined();
+  it('should create new customer if email not exists', async () => {
+    prisma.customer.findUnique.mockResolvedValue(null);
+    prisma.customer.create.mockResolvedValue({ id: 1 });
+
+    const res = await service.create({
+      name: 'Test',
+      email: 'test@mail.com',
+      phone: '9876543210',
+    });
+
+    expect(res.id).toBe(1);
   });
 });
+
