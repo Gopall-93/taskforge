@@ -9,6 +9,11 @@ services:
       POSTGRES_DB: TaskForge
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: password
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d TaskForge"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
     ports:
       - "5432:5432"
     volumes:
@@ -19,13 +24,14 @@ services:
     container_name: crm_backend
     restart: always
     depends_on:
-      - postgres
+      postgres:
+        condition: service_healthy
     ports:
       - "3000:3000"
     environment:
-      DATABASE_URL: postgresql://postgres:password@postgres:5432/mini_crm
+      DATABASE_URL: postgresql://postgres:password@postgres:5432/TaskForge
       JWT_SECRET: supersecretkey
-    command: sh -c "npx prisma migrate deploy && node dist/main.js"
+    command: sh -c "npx prisma migrate deploy && node dist/src/main.js"
 
 volumes:
   postgres_data:
