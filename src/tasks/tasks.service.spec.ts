@@ -18,10 +18,7 @@ describe('TasksService', () => {
     };
 
     const module = await Test.createTestingModule({
-      providers: [
-        TasksService,
-        { provide: PrismaService, useValue: prisma },
-      ],
+      providers: [TasksService, { provide: PrismaService, useValue: prisma }],
     }).compile();
 
     service = module.get(TasksService);

@@ -38,7 +38,9 @@ export class TasksService {
       },
       include: {
         assignedTo: { select: { id: true, name: true, email: true } },
-        customer: { select: { id: true, name: true, email: true, phone: true } },
+        customer: {
+          select: { id: true, name: true, email: true, phone: true },
+        },
       },
     });
   }
@@ -83,7 +85,9 @@ export class TasksService {
       data: { status: dto.status },
       include: {
         assignedTo: { select: { id: true, name: true, email: true } },
-        customer: { select: { id: true, name: true, email: true, phone: true } },
+        customer: {
+          select: { id: true, name: true, email: true, phone: true },
+        },
       },
     });
   }

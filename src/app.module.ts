@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { APP_GUARD } from '@nestjs/core';
 
-import { PrismaModule } from './prisma/prisma.module';   // ⭐ ADD THIS
+import { PrismaModule } from './prisma/prisma.module'; // ⭐ ADD THIS
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import { CustomersModule } from './customers/customers.module';

@@ -23,7 +23,8 @@ describe('Tasks Routes', () => {
     token = res.body.accessToken;
   });
   afterAll(async () => {
-    await app.close();});
+    await app.close();
+  });
 
   it('ADMIN should get tasks list', async () => {
     const res = await request(app.getHttpServer())

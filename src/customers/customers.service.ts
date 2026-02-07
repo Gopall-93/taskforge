@@ -62,7 +62,6 @@ export class CustomersService {
     };
   }
 
-
   async findOne(id: number) {
     const customer = await this.prisma.customer.findUnique({ where: { id } });
 

@@ -15,26 +15,22 @@ describe('Auth Routes', () => {
   });
 
   it('should register user', async () => {
-    const res = await request(app.getHttpServer())
-      .post('/auth/register')
-      .send({
-        name: 'Admin',
-        email,
-        password: 'password123',
-        role: 'ADMIN',
-      });
+    const res = await request(app.getHttpServer()).post('/auth/register').send({
+      name: 'Admin',
+      email,
+      password: 'password123',
+      role: 'ADMIN',
+    });
 
     expect(res.status).toBe(201);
     expect(res.body.email).toBe(email);
   });
 
   it('should login user', async () => {
-    const res = await request(app.getHttpServer())
-      .post('/auth/login')
-      .send({
-        email,
-        password: 'password123',
-      });
+    const res = await request(app.getHttpServer()).post('/auth/login').send({
+      email,
+      password: 'password123',
+    });
 
     expect(res.status).toBe(201);
     expect(res.body.accessToken).toBeDefined();

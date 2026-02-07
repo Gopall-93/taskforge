@@ -46,9 +46,15 @@ export class TasksController {
   @ApiBody({ type: UpdateStatusDto })
   @ApiResponse({ status: 200, description: 'Task status protectd' })
   @ApiResponse({ status: 404, description: 'Task not found' })
-  @ApiResponse({ status: 403, description: 'Not authorized to update this task' })
-  updateStatus(@Param('id') id: string, @Body() dto: UpdateStatusDto, @Req() req) {
+  @ApiResponse({
+    status: 403,
+    description: 'Not authorized to update this task',
+  })
+  updateStatus(
+    @Param('id') id: string,
+    @Body() dto: UpdateStatusDto,
+    @Req() req,
+  ) {
     return this.service.updateStatus(Number(id), dto, req.user);
   }
 }
-
