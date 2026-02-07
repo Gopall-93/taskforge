@@ -1,9 +1,5 @@
-Ahh got you 😭 you want **ONLY raw README.md file content**, no explanations, no chat text.
-
-Here you go — **copy-paste directly**:
-
 ````md
-# 🚀 Mini CRM Backend – NestJS Assignment
+# 🚀 TaskForge
 
 A production-style CRM backend built using **NestJS, PostgreSQL, Prisma ORM, JWT Authentication, and Role-Based Authorization**.
 
@@ -181,6 +177,3 @@ curl -X POST http://localhost:3000/customers \
 ## 🧑‍💻 Author
 
 **Gopall Sharma**
-Backend Developer Intern Assignment
-
-```
